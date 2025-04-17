@@ -88,14 +88,16 @@ class Facet:
     def __init__(self, vertexes, alpha, beta, gamma, c):
         self.vertexes = vertexes
         # хорошая ли сторона
-        vertexes = [p.rz(-gamma).ry(-beta).rz(-alpha) * (1.0 / c) for p in vertexes]
+        vertexes = [p.rz(-gamma).ry(-beta).rz(-alpha) * (1.0 / c) for p in
+                    vertexes]
         eps = 1e-15
-        self.good = True if len([p for p
-                                 in vertexes if -eps - 0.5 <= p.x <= 0.5 + eps and
+        self.good = True if len([p for p in vertexes if
+                                 -eps - 0.5 <= p.x <= 0.5 + eps and
                                  -eps - 0.5 <= p.y <= 0.5 + eps]) <= 2 else False
         if self.good:
             # вектор нормали к стороне
-            normal = (self.vertexes[1] - self.vertexes[0]).cross(self.vertexes[2] - self.vertexes[1])
+            normal = (self.vertexes[1] - self.vertexes[0]).cross(
+                self.vertexes[2] - self.vertexes[1])
             normal = normal*(1/normal.mod())
             # косинус угла между гранью и плоскостью проектирования
             cos = abs(Polyedr.V.dot(normal))
@@ -103,7 +105,8 @@ class Facet:
             total_area = 0.0
             # проходим по всем треугольникам
             for i in range(1, len(vertexes) - 1):
-                triangle_area = (vertexes[i] - vertexes[0]).cross(vertexes[i + 1] - vertexes[0]).mod() * 0.5
+                triangle_area = (vertexes[i] - vertexes[0]).cross(
+                    vertexes[i + 1] - vertexes[0]).mod() * 0.5
                 total_area += triangle_area
             self.projection_area = total_area*cos
 
@@ -177,7 +180,8 @@ class Polyedr:
                     for n in range(size):
                         self.edges.append(Edge(vertexes[n - 1], vertexes[n]))
                     # задание самой грани
-                    self.facets.append(Facet(vertexes, alpha, beta, gamma, self.c))
+                    self.facets.append(
+                        Facet(vertexes, alpha, beta, gamma, self.c))
                     facet = Facet(vertexes, alpha, beta, gamma, self.c)
                     if facet.good:
                         self.sum += facet.projection_area
