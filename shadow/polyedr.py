@@ -91,9 +91,9 @@ class Facet:
         vertexes = [p.rz(-gamma).ry(-beta).rz(-alpha) * (1.0 / c) for p in
                     vertexes]
         eps = 1e-15
-        self.good = True if len([p for p in vertexes if
-                                 -eps - 0.5 <= p.x <= 0.5 + eps and
-                                 -eps - 0.5 <= p.y <= 0.5 + eps]) <= 2 else False
+        self.good = True if len(
+            [p for p in vertexes if -eps - 0.5 <= p.x <= 0.5 + eps and
+             -eps - 0.5 <= p.y <= 0.5 + eps]) <= 2 else False
         if self.good:
             # вектор нормали к стороне
             normal = (self.vertexes[1] - self.vertexes[0]).cross(
