@@ -108,7 +108,7 @@ class TestPolyedr(unittest.TestCase):
 4	8 7 6 5 """
         with patch('shadow.polyedr.open', mock_open(read_data=file_4)):
             polyedr = Polyedr('data/test_4.geom')
-            assert polyedr.projection_area() == approx(32.0)
+            assert polyedr.projection_area() == approx(32.0*40**2)
 
     def test_5(self):
         file_5 = """40.0	0.0	60.0	0.0
@@ -120,4 +120,4 @@ class TestPolyedr(unittest.TestCase):
 4	1    2    3    4 """
         with patch('shadow.polyedr.open', mock_open(read_data=file_5)):
             polyedr = Polyedr('data/test_5.geom')
-            assert polyedr.projection_area() == approx(8.0)
+            assert polyedr.projection_area() == approx(8.0*40**2)

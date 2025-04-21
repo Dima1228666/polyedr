@@ -197,4 +197,4 @@ class Polyedr:
 
     # Сумма проекций хороших сторон полиэдра
     def projection_area(self):
-        return self.sum
+        return self.sum*self.c**2
