@@ -103,6 +103,7 @@ class Facet:
                 triangle_area = 0.5 * cross.mod()
                 total_area += triangle_area
             self.projection_area = total_area
+
     # «Вертикальна» ли грань?
     def is_vertical(self):
         return self.h_normal().dot(Polyedr.V) == 0.0
