@@ -67,7 +67,7 @@ class TestVoid(unittest.TestCase):
     def test_shadow_01(self):
         s = Edge(R3(0.0, 0.0, 0.0), R3(1.0, 1.0, 0.0))
         f = Facet([R3(0.0, 0.0, 0.0), R3(2.0, 0.0, 0.0),
-                   R3(2.0, 2.0, 0.0), R3(0.0, 2.0, 0.0)], 0, 0, 0, 1)
+                   R3(2.0, 2.0, 0.0), R3(0.0, 2.0, 0.0)])
         s.shadow(f)
         self.assertEqual(SegmentApproxMatcher(s.gaps[0]), Segment(0.0, 1.0))
 
@@ -75,7 +75,7 @@ class TestVoid(unittest.TestCase):
     def test_shadow_02(self):
         s = Edge(R3(0.0, 0.0, 1.0), R3(1.0, 1.0, 1.0))
         f = Facet([R3(0.0, 0.0, 0.0), R3(2.0, 0.0, 0.0),
-                   R3(2.0, 2.0, 0.0), R3(0.0, 2.0, 0.0)], 0, 0, 0, 1)
+                   R3(2.0, 2.0, 0.0), R3(0.0, 2.0, 0.0)])
         s.shadow(f)
         self.assertEqual(SegmentApproxMatcher(s.gaps[0]), Segment(0.0, 1.0))
 
@@ -83,7 +83,7 @@ class TestVoid(unittest.TestCase):
     def test_shadow_03(self):
         s = Edge(R3(0.0, 0.0, -1.0), R3(1.0, 1.0, -1.0))
         f = Facet([R3(0.0, 0.0, 0.0), R3(2.0, 0.0, 0.0),
-                   R3(2.0, 2.0, 0.0), R3(0.0, 2.0, 0.0)], 0, 0, 0, 1)
+                   R3(2.0, 2.0, 0.0), R3(0.0, 2.0, 0.0)])
         s.shadow(f)
         self.assertEqual(len(s.gaps), 0)
 
@@ -91,7 +91,7 @@ class TestVoid(unittest.TestCase):
     def test_shadow_04(self):
         s = Edge(R3(-5.0, -5.0, -1.0), R3(3.0, 3.0, -1.0))
         f = Facet([R3(0.0, 0.0, 0.0), R3(2.0, 0.0, 0.0),
-                   R3(2.0, 2.0, 0.0), R3(0.0, 2.0, 0.0)], 0, 0, 0, 1)
+                   R3(2.0, 2.0, 0.0), R3(0.0, 2.0, 0.0)])
         s.shadow(f)
         self.assertEqual(len(s.gaps), 2)
 
@@ -99,7 +99,7 @@ class TestVoid(unittest.TestCase):
     def test_shadow_05(self):
         s = Edge(R3(0.0, 0.0, 0.0), R3(1.0, 1.0, 0.0))
         f = Facet([R3(0.0, 0.0, 0.0), R3(0.0, 0.0, 1.0),
-                   R3(0.0, 1.0, 1.0), R3(0.0, 1.0, 0.0)], 0, 0, 0, 1)
+                   R3(0.0, 1.0, 1.0), R3(0.0, 1.0, 0.0)])
         s.shadow(f)
         self.assertEqual(len(s.gaps), 1)
         self.assertEqual(SegmentApproxMatcher(s.gaps[0]), Segment(0.0, 1.0))
@@ -108,7 +108,7 @@ class TestVoid(unittest.TestCase):
     def test_shadow_06(self):
         s = Edge(R3(0.0, 0.0, 0.0), R3(0.0, 0.0, -1.0))
         f = Facet([R3(0.0, 0.0, 0.0), R3(1.0, 0.0, 0.0),
-                   R3(1.0, 1.0, 0.0), R3(0.0, 1.0, 0.0)], 0, 0, 0, 1)
+                   R3(1.0, 1.0, 0.0), R3(0.0, 1.0, 0.0)])
         s.shadow(f)
         self.assertEqual(len(s.gaps), 1)
         self.assertEqual(SegmentApproxMatcher(s.gaps[0]), Segment(0.0, 1.0))

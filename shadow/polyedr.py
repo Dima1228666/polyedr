@@ -85,31 +85,24 @@ class Facet:
     """ Грань полиэдра """
     # Параметры конструктора: список вершин
 
-    def __init__(self, vertexes, alpha, beta, gamma, c):
+    def __init__(self, vertexes):
         self.vertexes = vertexes
         # хорошая ли сторона
-        vertexes = [p.rz(-gamma).ry(-beta).rz(-alpha) * (1.0 / c) for p in
-                    vertexes]
-        eps = 1e-15
-        self.good = True if len(
-            [p for p in vertexes if -eps - 0.5 <= p.x <= 0.5 + eps and
-             -eps - 0.5 <= p.y <= 0.5 + eps]) <= 2 else False
+        good_vertices = [p for p in vertexes if
+                         abs(p.x) > 0.5 or abs(p.y) > 0.5]
+        self.good = len(good_vertices) <= 2
         if self.good:
-            # вектор нормали к стороне
-            normal = (self.vertexes[1] - self.vertexes[0]).cross(
-                self.vertexes[2] - self.vertexes[1])
-            normal = normal*(1/normal.mod())
-            # косинус угла между гранью и плоскостью проектирования
-            cos = abs(Polyedr.V.dot(normal))
             # площадь грани
             total_area = 0.0
-            # проходим по всем треугольникам
-            for i in range(1, len(vertexes) - 1):
-                triangle_area = (vertexes[i] - vertexes[0]).cross(
-                    vertexes[i + 1] - vertexes[0]).mod() * 0.5
+            for i in range(1, len(self.vertexes) - 1):
+                v1 = self.vertexes[i] - self.vertexes[0]
+                v1.z = 0.0
+                v2 = self.vertexes[i + 1] - self.vertexes[0]
+                v2.z = 0.0
+                cross = v1.cross(v2)
+                triangle_area = 0.5 * cross.mod()
                 total_area += triangle_area
-            self.projection_area = total_area*cos
-
+            self.projection_area = total_area
     # «Вертикальна» ли грань?
     def is_vertical(self):
         return self.h_normal().dot(Polyedr.V) == 0.0
@@ -158,7 +151,7 @@ class Polyedr:
                     # обрабатываем первую строку; buf - вспомогательный массив
                     buf = line.split()
                     # коэффициент гомотетии
-                    self.c = float(buf.pop(0))
+                    c = float(buf.pop(0))
                     # углы Эйлера, определяющие вращение
                     alpha, beta, gamma = (float(x) * pi / 180.0 for x in buf)
                 elif i == 1:
@@ -168,7 +161,7 @@ class Polyedr:
                     # задание всех вершин полиэдра
                     x, y, z = (float(x) for x in line.split())
                     self.vertexes.append(R3(x, y, z).rz(
-                        alpha).ry(beta).rz(gamma) * self.c)
+                        alpha).ry(beta).rz(gamma) * c)
                 else:
                     # вспомогательный массив
                     buf = line.split()
@@ -180,9 +173,8 @@ class Polyedr:
                     for n in range(size):
                         self.edges.append(Edge(vertexes[n - 1], vertexes[n]))
                     # задание самой грани
-                    self.facets.append(
-                        Facet(vertexes, alpha, beta, gamma, self.c))
-                    facet = Facet(vertexes, alpha, beta, gamma, self.c)
+                    self.facets.append(Facet(vertexes))
+                    facet = Facet(vertexes)
                     if facet.good:
                         self.sum += facet.projection_area
 
@@ -197,4 +189,4 @@ class Polyedr:
 
     # Сумма проекций хороших сторон полиэдра
     def projection_area(self):
-        return self.sum*self.c**2
+        return self.sum
